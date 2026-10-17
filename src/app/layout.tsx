@@ -4,6 +4,7 @@ import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import PriceTicker from "@/components/PriceTicker";
+import Footer from "@/components/Footer";
 
 const hindSiliguri = Hind_Siliguri({
   subsets: ["bengali", "latin"],
@@ -32,6 +33,7 @@ export default function RootLayout({
         <Navbar />
         <PriceTicker />
         {children}
+        <Footer />
         <Toaster position="top-center" />
       </body>
     </html>
