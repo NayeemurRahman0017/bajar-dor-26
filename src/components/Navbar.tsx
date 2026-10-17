@@ -1,11 +1,13 @@
 
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
+import logo from "@/assets/logo-icon.png";
 
 type Category = {
   id?: string;
@@ -82,6 +84,7 @@ export default function Navbar() {
   async function handleSignOut() {
     try {
       await authClient.signOut();
+
       toast.success("সফলভাবে সাইন আউট হয়েছে");
       setMenuOpen(false);
       router.push("/");
@@ -93,13 +96,11 @@ export default function Navbar() {
 
   function linkClass(href: string) {
     const isActive =
-      href === "/"
-        ? pathname === "/"
-        : pathname === href || pathname.startsWith(`${href}/`);
+      pathname === href || pathname.startsWith(`${href}/`);
 
-    return `flex shrink-0 items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+    return `flex shrink-0 items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
       isActive
-        ? "bg-green-50 text-green-800"
+        ? "bg-green-100 text-green-800"
         : "text-gray-700 hover:bg-green-50 hover:text-green-800"
     }`;
   }
@@ -110,29 +111,36 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-gray-100 bg-white shadow-sm">
-      
+      {/* First Row: Logo + Authentication */}
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
+        {/* Logo and Bangla Date */}
         <Link
           href="/"
           onClick={closeMenu}
           aria-label="বাজার দর হোম"
-          className="flex min-w-0 items-center gap-2.5"
+          className="flex min-w-0 items-center gap-3"
         >
-          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-green-700 text-2xl text-white">
-            🛒
-          </span>
+          <Image
+            src={logo}
+            alt="বাজার দর লোগো"
+            width={48}
+            height={48}
+            priority
+            className="h-12 w-12 shrink-0 object-contain"
+          />
 
           <span className="flex min-w-0 flex-col">
             <span className="text-xl font-bold leading-tight text-gray-900 sm:text-2xl">
               বাজার দর
             </span>
+
             <span className="mt-1 text-xs text-gray-500 sm:text-sm">
               {banglaDate}
             </span>
           </span>
         </Link>
 
-        {/* Desktop authentication */}
+        {/* Desktop Authentication */}
         <div className="hidden shrink-0 items-center gap-2 sm:flex">
           {isPending ? (
             <span className="h-10 w-24 animate-pulse rounded-lg bg-gray-100" />
@@ -145,18 +153,16 @@ export default function Navbar() {
                 <span className="flex h-9 w-9 items-center justify-center rounded-full bg-green-100 text-green-800">
                   {session.user.name?.charAt(0) || "👤"}
                 </span>
+
                 <span className="max-w-28 truncate">
                   {session.user.name || "প্রোফাইল"}
-                </span>
-                <span aria-hidden="true" className="text-gray-400">
-                  ▾
                 </span>
               </Link>
 
               <button
                 type="button"
                 onClick={handleSignOut}
-                className="rounded-lg border border-gray-200 px-3 py-2 text-sm font-semibold text-gray-700 hover:border-red-200 hover:bg-red-50 hover:text-red-600"
+                className="rounded-lg border border-gray-200 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:border-red-200 hover:bg-red-50 hover:text-red-600"
               >
                 সাইন আউট
               </button>
@@ -169,6 +175,7 @@ export default function Navbar() {
               >
                 সাইন ইন
               </Link>
+
               <Link
                 href="/signup"
                 className="rounded-lg bg-green-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-green-800"
@@ -179,7 +186,7 @@ export default function Navbar() {
           )}
         </div>
 
-        
+        {/* Mobile Menu Button */}
         <button
           type="button"
           onClick={() => setMenuOpen((open) => !open)}
@@ -191,14 +198,12 @@ export default function Navbar() {
         </button>
       </div>
 
-      
+      {/* Second Row: Desktop Category Navigation */}
       <div className="hidden border-t border-gray-100 lg:block">
         <nav
           aria-label="প্রধান নেভিগেশন"
           className="mx-auto flex max-w-7xl items-center gap-2 overflow-x-auto px-4 py-2 sm:px-6"
         >
-          
-
           {categories.map((category) => (
             <Link
               key={category.id ?? category.slug}
@@ -212,15 +217,13 @@ export default function Navbar() {
         </nav>
       </div>
 
-      
+      {/* Mobile Menu */}
       {menuOpen && (
         <div className="border-t border-gray-100 bg-white px-4 py-3 lg:hidden">
           <nav
             aria-label="মোবাইল নেভিগেশন"
             className="flex flex-col gap-1.5"
           >
-            
-
             {categories.map((category) => (
               <Link
                 key={category.id ?? category.slug}
@@ -234,6 +237,7 @@ export default function Navbar() {
             ))}
           </nav>
 
+          {/* Mobile Authentication */}
           <div className="mt-3 flex flex-wrap gap-2 border-t border-gray-100 pt-3">
             {isPending ? (
               <span className="h-10 w-24 animate-pulse rounded-lg bg-gray-100" />
