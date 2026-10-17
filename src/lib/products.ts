@@ -1,3 +1,4 @@
+
 import type { Product } from "@/lib/types";
 
 const API_URL =
@@ -71,7 +72,7 @@ function extractProducts(data: unknown): RawProduct[] {
 }
 
 function normalizeProduct(item: RawProduct): Product {
-  const id = getNumber(item, ["id", "productId", "_id"]);
+  const id = getString(item, ["id", "productId", "_id"]);
 
   const categoryValue = item.category;
 
@@ -82,7 +83,11 @@ function normalizeProduct(item: RawProduct): Product {
 
   const category = categoryObject
     ? getString(categoryObject, ["slug", "id", "nameBn", "name"])
-    : getString(item, ["categorySlug", "category_slug", "category"]);
+    : getString(item, [
+        "categorySlug",
+        "category_slug",
+        "category",
+      ]);
 
   const categoryNameBn =
     getString(item, [
@@ -152,13 +157,16 @@ function normalizeProduct(item: RawProduct): Product {
         typeof market === "object" && market !== null,
     )
     .map((market) => ({
-      market: getString(market, ["market", "name", "marketName"]),
+      market: getString(market, [
+        "market",
+        "name",
+        "marketName",
+      ]),
       division: getString(market, ["division", "district"]),
       min: getNumber(market, ["min", "minPrice", "min_price"]),
       max: getNumber(market, ["max", "maxPrice", "max_price"]),
     }));
 
-  // API থেকে আসা image URL
   const image = getString(item, [
     "image",
     "imageUrl",
@@ -170,11 +178,13 @@ function normalizeProduct(item: RawProduct): Product {
     "picture",
   ]);
 
+  const slug =
+    getString(item, ["slug", "productSlug", "product_slug"]) ||
+    id;
+
   return {
-    id,
-    slug:
-      getString(item, ["slug", "productSlug", "product_slug"]) ||
-      String(id),
+    id: Number(id) || 0,
+    slug,
     nameBn: getString(item, [
       "nameBn",
       "name_bn",
@@ -183,7 +193,10 @@ function normalizeProduct(item: RawProduct): Product {
     ]),
     category,
     categoryNameBn,
-    categoryIcon: "",
+    categoryIcon: getString(item, [
+      "categoryIcon",
+      "category_icon",
+    ]),
     unit: getString(item, [
       "unit",
       "measurementUnit",
@@ -209,7 +222,9 @@ export async function getProducts(): Promise<Product[]> {
     });
 
     if (!response.ok) {
-      throw new Error(`Products API failed: ${response.status}`);
+      throw new Error(
+        `Products API failed: ${response.status}`,
+      );
     }
 
     const result: unknown = await response.json();
@@ -219,18 +234,26 @@ export async function getProducts(): Promise<Product[]> {
       .map(normalizeProduct)
       .filter((product) => product.nameBn.length > 0);
 
-    // Debug: API থেকে আসা image URL যাচাই করতে
+    // Debug: API response
+    console.log("Total raw products:", rawProducts.length);
+
     console.log(
-      "Product images:",
+      "Normalized products:",
       products.map((product) => ({
+        id: product.id,
+        slug: product.slug,
         name: product.nameBn,
-        image: product.image,
       })),
     );
 
     return products;
   } catch (error) {
-    console.error("Failed to fetch BazarDor products:", error);
+    console.error(
+      "Failed to fetch BazarDor products:",
+      error,
+    );
+
     return [];
   }
 }
+
