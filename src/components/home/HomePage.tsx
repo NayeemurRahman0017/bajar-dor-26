@@ -69,7 +69,7 @@ export default function HomePage({ products }: HomePageProps) {
       </section>
 
       {/* Section C: All Products */}
-      <section>
+      <section id="all-products" className="scroll-mt-24">
         <div className="mb-5">
           <h2 className="text-xl font-bold text-gray-900 sm:text-2xl">
             সব পণ্য

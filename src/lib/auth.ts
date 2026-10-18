@@ -1,16 +1,19 @@
 
 import { betterAuth } from "better-auth";
-import { mongodbAdapter } from "@better-auth/mongo-adapter";
 import { MongoClient } from "mongodb";
+import { mongodbAdapter } from "@better-auth/mongo-adapter";
 
 const mongoUri = process.env.MONGODB_URI;
 
 if (!mongoUri) {
-  throw new Error("MONGODB_URI is missing in .env.local");
+  throw new Error(
+    "MONGODB_URI is missing in your .env.local file"
+  );
 }
 
 const client = new MongoClient(mongoUri);
-const db = client.db();
+
+const db = client.db("bazardor");
 
 export const auth = betterAuth({
   appName: "BazarDor",
