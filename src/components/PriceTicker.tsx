@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -29,9 +28,12 @@ export default function PriceTicker() {
           "https://api.api-store.workers.dev/api/bazardor/products"
         );
 
-        if (!response.ok) throw new Error("Product request failed");
+        if (!response.ok) {
+          throw new Error("Product request failed");
+        }
 
         const result = await response.json();
+
         const list = Array.isArray(result)
           ? result
           : result.products ?? result.data ?? [];
@@ -45,6 +47,7 @@ export default function PriceTicker() {
     }
 
     loadPrices();
+
     return () => {
       active = false;
     };
@@ -58,21 +61,12 @@ export default function PriceTicker() {
       ];
 
   return (
-<<<<<<< HEAD
-   <div className="container mx-auto sticky top-0 z-50">
-    <div className="overflow-hidden border-b border-green-100 bg-green-50">
-      <div className="mx-auto flex max-w-7xl items-center">
-        <div className="z-10 shrink-0 bg-green-700 px-3 py-2 text-xs font-bold text-white sm:px-4 sm:text-sm">
-          বাজারদর
-        </div>
-=======
-    <div className="container mx-auto sticky top-0 z-50">
+    <div className="sticky top-18 z-30 mx-auto w-full lg:top-32.5">
       <div className="overflow-hidden border-b border-green-100 bg-green-50">
         <div className="mx-auto flex max-w-7xl items-center">
           <div className="z-10 shrink-0 bg-green-700 px-3 py-2 text-xs font-bold text-white sm:px-4 sm:text-sm">
             বাজারদর
           </div>
->>>>>>> bc0b716 (add sticky)
 
           <div className="min-w-0 flex-1 overflow-hidden py-2">
             <div className="animate-marquee flex w-max items-center gap-8 whitespace-nowrap">
@@ -86,6 +80,7 @@ export default function PriceTicker() {
                     const name = product.nameBn ?? product.name ?? "পণ্য";
                     const price = product.today ?? product.price;
                     const direction = product.change?.dir;
+
                     const changeColor =
                       direction === "up"
                         ? "text-red-600"

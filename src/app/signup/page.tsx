@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, type SubmitEvent } from "react";
@@ -20,9 +19,7 @@ export default function SignupPage() {
     "google" | "github" | ""
   >("");
 
-  async function handleSignup(
-    e: SubmitEvent<HTMLFormElement>
-  ) {
+  async function handleSignup(e: SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
 
     const cleanName = name.trim();
@@ -53,52 +50,22 @@ export default function SignupPage() {
       });
 
       if (result.error) {
-        const error = result.error;
-
-        console.error("Registration API error:", error);
-        console.error(
-          "Registration error details:",
-          JSON.stringify(error, null, 2)
+        toast.error(
+          result.error.message || "রেজিস্ট্রেশন ব্যর্থ হয়েছে"
         );
-        console.error("Error status:", error.status);
-        console.error("Error code:", error.code);
-        console.error("Error message:", error.message);
-
-        const errorMessage =
-          error.message ||
-          error.code ||
-          "রেজিস্ট্রেশন ব্যর্থ হয়েছে";
-
-        toast.error(errorMessage);
-
         return;
       }
 
-      
       toast.success("রেজিস্ট্রেশন সফল হয়েছে!");
 
       router.push("/signin");
       router.refresh();
     } catch (error: unknown) {
-      console.error("Registration exception:", error);
-
-      if (error instanceof Error) {
-        console.error("Error name:", error.name);
-        console.error("Error message:", error.message);
-
-        toast.error(
-          `রেজিস্ট্রেশন ব্যর্থ: ${error.message}`
-        );
-      } else {
-        console.error(
-          "Unknown registration error:",
-          JSON.stringify(error, null, 2)
-        );
-
-        toast.error(
-          "রেজিস্ট্রেশন ব্যর্থ হয়েছে। Console পরীক্ষা করুন।"
-        );
-      }
+      toast.error(
+        error instanceof Error
+          ? `রেজিস্ট্রেশন ব্যর্থ: ${error.message}`
+          : "রেজিস্ট্রেশন ব্যর্থ হয়েছে"
+      );
     } finally {
       setLoading(false);
     }
@@ -116,11 +83,6 @@ export default function SignupPage() {
       });
 
       if (result.error) {
-        console.error(
-          `${provider} login error:`,
-          JSON.stringify(result.error, null, 2)
-        );
-
         toast.error(
           result.error.message ||
             `${provider} দিয়ে লগইন করা যায়নি`
@@ -129,8 +91,6 @@ export default function SignupPage() {
         setSocialLoading("");
       }
     } catch (error: unknown) {
-      console.error("Social login exception:", error);
-
       toast.error(
         error instanceof Error
           ? error.message
@@ -154,10 +114,7 @@ export default function SignupPage() {
         </p>
 
         <div className="mx-auto mt-7 w-full max-w-sm rounded-xl border border-gray-100 bg-white p-5 text-left shadow-sm sm:p-6">
-          <form
-            onSubmit={handleSignup}
-            className="space-y-3"
-          >
+          <form onSubmit={handleSignup} className="space-y-3">
             <div>
               <label
                 htmlFor="name"
@@ -313,10 +270,7 @@ export default function SignupPage() {
 
         <p className="mt-5 text-xs text-gray-400">
           ←{" "}
-          <Link
-            href="/"
-            className="hover:text-green-700"
-          >
+          <Link href="/" className="hover:text-green-700">
             হোম পেজে ফিরে যান
           </Link>
         </p>
@@ -324,4 +278,3 @@ export default function SignupPage() {
     </main>
   );
 }
-
