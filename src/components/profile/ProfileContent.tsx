@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState, type SubmitEvent } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -25,7 +25,7 @@ export default function ProfileContent({
   const [signingOut, setSigningOut] = useState(false);
 
   
-  async function handleUpdate(e: FormEvent<HTMLFormElement>) {
+  async function handleUpdate(e: SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
 
     const trimmedName = name.trim();

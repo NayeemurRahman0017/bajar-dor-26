@@ -18,7 +18,7 @@ export default function HomePage({ products }: HomePageProps) {
 
   return (
     <div className="mx-auto max-w-7xl space-y-10 px-4 py-8 sm:px-6 lg:px-8">
-      {/* Section A: Price Increased */}
+      <div className="container mx-auto">
       <section>
         <div className="mb-5">
           <h2 className="text-xl font-bold text-gray-900 sm:text-2xl">
@@ -42,8 +42,9 @@ export default function HomePage({ products }: HomePageProps) {
           </p>
         )}
       </section>
+      
 
-      {/* Section B: Price Decreased */}
+      
       <section>
         <div className="mb-5">
           <h2 className="text-xl font-bold text-gray-900 sm:text-2xl">
@@ -68,7 +69,7 @@ export default function HomePage({ products }: HomePageProps) {
         )}
       </section>
 
-      {/* Section C: All Products */}
+      
       <section id="all-products" className="scroll-mt-24">
         <div className="mb-5">
           <h2 className="text-xl font-bold text-gray-900 sm:text-2xl">
@@ -92,6 +93,7 @@ export default function HomePage({ products }: HomePageProps) {
           </p>
         )}
       </section>
+    </div>
     </div>
   );
 }

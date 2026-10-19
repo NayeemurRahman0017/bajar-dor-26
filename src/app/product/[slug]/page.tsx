@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 
 import { getProducts } from "@/lib/products";
@@ -16,22 +15,18 @@ export default async function ProductDetailsPage({
 }: ProductDetailsPageProps) {
   const { slug } = await params;
 
-  // API থেকে সব পণ্য সংগ্রহ
   const products = await getProducts();
 
-  // URL-এর slug অনুযায়ী পণ্য খোঁজা
   const normalizedSlug = decodeURIComponent(slug).trim();
 
   const product = products.find(
     (item) => String(item.slug).trim() === normalizedSlug,
   );
 
-  // পণ্য না পাওয়া গেলে 404
   if (!product) {
     notFound();
   }
 
-  // বাজারের তথ্য
   const markets = product.markets ?? [];
 
   const prices = markets
@@ -62,9 +57,10 @@ export default async function ProductDetailsPage({
   const isPriceFlat = product.change?.dir === "flat";
 
   return (
+    <div className="container mx-auto">
     <main className="min-h-screen bg-[#f0f5f0] px-3 py-6 sm:px-5 sm:py-8">
       <div className="mx-auto max-w-6xl">
-        {/* Breadcrumb */}
+        
         <nav
           aria-label="Breadcrumb"
           className="mb-5 flex flex-wrap items-center gap-2 text-xs text-[#667168] sm:text-sm"
@@ -84,20 +80,19 @@ export default async function ProductDetailsPage({
           </span>
         </nav>
 
-        {/* Product Summary Card */}
+        
         <section className="rounded-2xl border border-[#e0e9e0] bg-[#fbfcfa] p-4 sm:p-6">
           <div className="flex items-center gap-3 sm:gap-5">
-            {/* API Product Image */}
+            
             <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#f0f5ef] sm:h-20 sm:w-20">
               {product.image ? (
-                <Image
-                  src={product.image}
-                  alt={product.nameBn}
-                  width={80}
-                  height={80}
-                  unoptimized
-                  className="h-full w-full object-contain p-1.5"
-                />
+                <span
+                  className="text-4xl sm:text-5xl"
+                  role="img"
+                  aria-label={product.nameBn}
+                >
+                  {product.image}
+                </span>
               ) : (
                 <span className="text-xs text-gray-400">
                   ছবি নেই
@@ -105,7 +100,7 @@ export default async function ProductDetailsPage({
               )}
             </div>
 
-            {/* Product Information */}
+            
             <div className="min-w-0 flex-1">
               <h1 className="text-lg font-bold leading-snug text-[#263229] sm:text-2xl">
                 {product.nameBn}
@@ -119,8 +114,7 @@ export default async function ProductDetailsPage({
 
               {product.yesterday > 0 && (
                 <p className="mt-1 text-xs text-[#687269] sm:text-sm">
-                  গতকালের তুলনায় আজ দাম
-                  {" "}
+                  গতকালের তুলনায় আজ দাম{" "}
                   {isPriceUp
                     ? "বেড়েছে"
                     : isPriceDown
@@ -132,7 +126,7 @@ export default async function ProductDetailsPage({
               )}
             </div>
 
-            {/* Today's Price */}
+            
             <div className="shrink-0 rounded-xl bg-[#f0f5ef] px-3 py-3 text-center sm:px-5 sm:py-4">
               <p className="text-[10px] text-[#69756b] sm:text-xs">
                 আজকের দাম
@@ -169,14 +163,14 @@ export default async function ProductDetailsPage({
           </div>
         </section>
 
-        {/* Price Summary */}
+        
         <section className="mt-5 rounded-2xl border border-[#e0e9e0] bg-[#fbfcfa] p-4 sm:p-5">
           <h2 className="mb-3 text-base font-bold text-[#29352c] sm:text-lg">
             দামের সারসংক্ষেপ
           </h2>
 
           <div className="grid grid-cols-3 gap-2 sm:gap-4">
-            {/* Minimum Price */}
+           
             <div className="rounded-xl border border-[#e3ebe3] bg-[#fbfcfa] p-3 sm:p-4">
               <p className="text-[10px] text-[#657066] sm:text-sm">
                 সর্বনিম্ন দাম
@@ -191,7 +185,7 @@ export default async function ProductDetailsPage({
               </p>
             </div>
 
-            {/* Maximum Price */}
+            
             <div className="rounded-xl border border-[#e3ebe3] bg-[#fbfcfa] p-3 sm:p-4">
               <p className="text-[10px] text-[#657066] sm:text-sm">
                 সর্বোচ্চ দাম
@@ -206,7 +200,7 @@ export default async function ProductDetailsPage({
               </p>
             </div>
 
-            {/* Average Price */}
+           
             <div className="rounded-xl border border-[#e3ebe3] bg-[#fbfcfa] p-3 sm:p-4">
               <p className="text-[10px] text-[#657066] sm:text-sm">
                 গড় দাম
@@ -223,7 +217,7 @@ export default async function ProductDetailsPage({
           </div>
         </section>
 
-        {/* Market Prices Table */}
+        
         <section className="mt-5 rounded-2xl border border-[#e0e9e0] bg-[#fbfcfa] p-4 sm:p-5">
           <h2 className="mb-3 text-base font-bold text-[#29352c] sm:text-lg">
             বাজারভিত্তিক আজকের দাম
@@ -310,17 +304,20 @@ export default async function ProductDetailsPage({
           )}
         </section>
 
-        {/* Back to Home */}
+       
         <div className="mt-5 pb-5">
           <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-sm font-medium text-green-800 transition-colors hover:text-green-950"
-          >
+                      href="/"
+                      className="inline-flex items-center gap-2 rounded-lg border border-green-200 bg-white px-5 py-3 text-sm font-semibold text-green-700 transition-colors hover:bg-green-50"
+                    >
+                      
             <span aria-hidden="true">←</span>
             সব পণ্য দেখুন
           </Link>
+          
         </div>
       </div>
     </main>
+    </div>
   );
 }

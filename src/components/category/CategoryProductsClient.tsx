@@ -17,7 +17,6 @@ export default function CategoryProductsClient({
 }: CategoryProductsClientProps) {
   const [sortBy, setSortBy] = useState<SortOption>("default");
 
-  // Sort products based on selected option
   const sortedProducts = useMemo(() => {
     const result = [...products];
 
@@ -31,8 +30,8 @@ export default function CategoryProductsClient({
   }, [products, sortBy]);
 
   return (
+    <div className="container mx-auto">
     <section>
-      {/* Section Title and Sort Control */}
       <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-xl font-bold text-gray-900 sm:text-2xl">
@@ -44,7 +43,6 @@ export default function CategoryProductsClient({
           </p>
         </div>
 
-        {/* Sort Control */}
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
           <label
             htmlFor="category-sort"
@@ -68,7 +66,6 @@ export default function CategoryProductsClient({
         </div>
       </div>
 
-      {/* Product Cards */}
       {sortedProducts.length > 0 ? (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 lg:grid-cols-3">
           {sortedProducts.map((product) => (
@@ -76,7 +73,6 @@ export default function CategoryProductsClient({
           ))}
         </div>
       ) : (
-        /* Empty State */
         <div className="rounded-2xl border border-dashed border-gray-300 bg-white px-5 py-12 text-center">
           <div className="text-5xl" role="img" aria-label="Shopping cart">
             🛒
@@ -99,5 +95,6 @@ export default function CategoryProductsClient({
         </div>
       )}
     </section>
+    </div>
   );
 }

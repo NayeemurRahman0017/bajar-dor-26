@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -16,28 +15,29 @@ export default async function CategoryPage({
 }: CategoryPageProps) {
   const { slug } = await params;
 
-  // Fetch all products from API
+  
   const products = await getProducts();
 
-  // Filter products by category slug
+  
   const categoryProducts = products.filter(
     (product) => product.category === slug,
   );
 
-  // Invalid category or no products found
+  
   if (categoryProducts.length === 0) {
     notFound();
   }
 
-  // Get category information from the first product
+  
   const category = categoryProducts[0];
 
   const categoryName = category.categoryNameBn;
 
   return (
+    <div className="container mx-auto">
     <main className="min-h-screen bg-[#f0f5f0] px-4 py-8 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        {/* Breadcrumb */}
+        
         <nav className="mb-6 flex items-center gap-2 text-sm text-gray-500">
           <Link
             href="/"
@@ -53,20 +53,19 @@ export default async function CategoryPage({
           </span>
         </nav>
 
-        {/* Category Header */}
+        
         <section className="mb-8 overflow-hidden rounded-2xl border border-[#e0e9e0] bg-[#fbfcfa]">
           <div className="flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:p-8">
-            {/* Category Image from API */}
+           
             <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-[#f0f5ef] sm:h-24 sm:w-24">
               {category.image ? (
-                <Image
-                  src={category.image}
-                  alt={categoryName}
-                  width={96}
-                  height={96}
-                  unoptimized
-                  className="h-full w-full object-contain p-2"
-                />
+                <span
+                  className="text-5xl"
+                  role="img"
+                  aria-label={categoryName}
+                >
+                  {category.image}
+                </span>
               ) : (
                 <span className="text-xs text-gray-400">
                   ছবি নেই
@@ -74,7 +73,7 @@ export default async function CategoryPage({
               )}
             </div>
 
-            {/* Category Information */}
+            
             <div className="flex-1">
               <p className="text-sm font-medium text-green-700">
                 পণ্যের ক্যাটাগরি
@@ -89,7 +88,7 @@ export default async function CategoryPage({
                 বর্তমান বাজারদর দেখুন।
               </p>
 
-              {/* Product Count */}
+             
               <div className="mt-4">
                 <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1.5 text-sm font-semibold text-green-800">
                   মোট {categoryProducts.length}টি পণ্য
@@ -99,10 +98,10 @@ export default async function CategoryPage({
           </div>
         </section>
 
-        {/* Product List and Sorting */}
+        
         <CategoryProductsClient products={categoryProducts} />
 
-        {/* Back to Home */}
+        
         <div className="mt-10 text-center">
           <Link
             href="/"
@@ -114,5 +113,6 @@ export default async function CategoryPage({
         </div>
       </div>
     </main>
+    </div>
   );
 }

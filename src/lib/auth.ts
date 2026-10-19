@@ -31,13 +31,13 @@ export const auth = betterAuth({
     client,
   }),
 
-  // Email and Password Authentication
+  
   emailAndPassword: {
     enabled: true,
     minPasswordLength: 8,
   },
 
-  // Account Linking Configuration
+  
   account: {
     accountLinking: {
       enabled: true,
@@ -45,7 +45,7 @@ export const auth = betterAuth({
     },
   },
 
-  // Google and GitHub Authentication
+  
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID as string,

@@ -1,4 +1,3 @@
-
 import type { Product } from "@/lib/types";
 
 const API_URL =
@@ -167,6 +166,7 @@ function normalizeProduct(item: RawProduct): Product {
       max: getNumber(market, ["max", "maxPrice", "max_price"]),
     }));
 
+  
   const image = getString(item, [
     "image",
     "imageUrl",
@@ -176,6 +176,10 @@ function normalizeProduct(item: RawProduct): Product {
     "thumbnail",
     "photo",
     "picture",
+    "imageSrc",
+    "image_src",
+    "productImage",
+    "product_image",
   ]);
 
   const slug =
@@ -222,9 +226,7 @@ export async function getProducts(): Promise<Product[]> {
     });
 
     if (!response.ok) {
-      throw new Error(
-        `Products API failed: ${response.status}`,
-      );
+      throw new Error(`Products API failed: ${response.status}`);
     }
 
     const result: unknown = await response.json();
@@ -234,17 +236,6 @@ export async function getProducts(): Promise<Product[]> {
       .map(normalizeProduct)
       .filter((product) => product.nameBn.length > 0);
 
-    // Debug: API response
-    console.log("Total raw products:", rawProducts.length);
-
-    console.log(
-      "Normalized products:",
-      products.map((product) => ({
-        id: product.id,
-        slug: product.slug,
-        name: product.nameBn,
-      })),
-    );
 
     return products;
   } catch (error) {
@@ -256,4 +247,3 @@ export async function getProducts(): Promise<Product[]> {
     return [];
   }
 }
-

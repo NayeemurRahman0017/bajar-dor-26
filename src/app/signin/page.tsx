@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState, type SubmitEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -14,7 +14,7 @@ const [password, setPassword] = useState("");
 const [loading, setLoading] = useState(false);
 const [socialLoading, setSocialLoading] = useState("");
 
-async function handleSignin(e: FormEvent<HTMLFormElement>) {
+async function handleSignin(e: SubmitEvent<HTMLFormElement>) {
 e.preventDefault();
 setLoading(true);
 

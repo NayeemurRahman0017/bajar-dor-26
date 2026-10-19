@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState, type SubmitEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -21,7 +21,7 @@ export default function SignupPage() {
   >("");
 
   async function handleSignup(
-    e: FormEvent<HTMLFormElement>
+    e: SubmitEvent<HTMLFormElement>
   ) {
     e.preventDefault();
 
@@ -74,8 +74,7 @@ export default function SignupPage() {
         return;
       }
 
-      console.log("Registration successful:", result.data);
-
+      
       toast.success("রেজিস্ট্রেশন সফল হয়েছে!");
 
       router.push("/signin");
