@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, type FormEvent } from "react";
@@ -16,12 +15,16 @@ interface ProfileContentProps {
   };
 }
 
-export default function ProfileContent({ user }: ProfileContentProps) {
+export default function ProfileContent({
+  user,
+}: ProfileContentProps) {
   const router = useRouter();
+
   const [name, setName] = useState(user.name);
   const [updating, setUpdating] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
 
+  
   async function handleUpdate(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -45,7 +48,9 @@ export default function ProfileContent({ user }: ProfileContentProps) {
       });
 
       if (result.error) {
-        toast.error(result.error.message || "তথ্য আপডেট করা যায়নি");
+        toast.error(
+          result.error.message || "তথ্য আপডেট করা যায়নি"
+        );
         return;
       }
 
@@ -58,6 +63,7 @@ export default function ProfileContent({ user }: ProfileContentProps) {
     }
   }
 
+  
   async function handleSignOut() {
     setSigningOut(true);
 
@@ -65,7 +71,9 @@ export default function ProfileContent({ user }: ProfileContentProps) {
       const result = await authClient.signOut();
 
       if (result.error) {
-        toast.error(result.error.message || "সাইন আউট করা যায়নি");
+        toast.error(
+          result.error.message || "সাইন আউট করা যায়নি"
+        );
         return;
       }
 
@@ -79,21 +87,24 @@ export default function ProfileContent({ user }: ProfileContentProps) {
     }
   }
 
-  const initial = user.name.trim().charAt(0).toUpperCase() || "U";
+  const initial =
+    user.name.trim().charAt(0).toUpperCase() || "U";
 
   return (
     <main className="min-h-[calc(100vh-1px)] bg-[#f1f5f1] px-4 py-10 sm:px-6 sm:py-12">
       <div className="mx-auto max-w-4xl">
+        
         <div className="mb-7">
           <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
             আমার প্রোফাইল
           </h1>
+
           <p className="mt-2 text-sm text-gray-600">
             আপনার অ্যাকাউন্টের তথ্য এখানে দেখুন।
           </p>
         </div>
 
-        {/* User information card */}
+        
         <section className="mb-7 flex flex-col gap-5 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:p-7">
           <div className="flex min-w-0 items-center gap-4">
             {user.image ? (
@@ -114,6 +125,7 @@ export default function ProfileContent({ user }: ProfileContentProps) {
               <h2 className="wrap-break-word text-lg font-bold text-gray-900 sm:text-xl">
                 {user.name || "ব্যবহারকারী"}
               </h2>
+
               <p className="mt-1 break-all text-sm text-gray-600 sm:text-base">
                 {user.email}
               </p>
@@ -130,10 +142,10 @@ export default function ProfileContent({ user }: ProfileContentProps) {
           </button>
         </section>
 
-        {/* Profile update card */}
-        <section className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:p-7">
+        
+        <section className="mb-7 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:p-7">
           <h2 className="mb-7 text-xl font-bold text-gray-900">
-            তথ্য
+            ব্যক্তিগত তথ্য
           </h2>
 
           <form onSubmit={handleUpdate}>
@@ -169,7 +181,10 @@ export default function ProfileContent({ user }: ProfileContentProps) {
         </section>
 
         <div className="mt-6 text-sm text-gray-500">
-          <Link href="/" className="transition hover:text-green-700">
+          <Link
+            href="/"
+            className="transition hover:text-green-700"
+          >
             ← হোম পেজে ফিরে যান
           </Link>
         </div>

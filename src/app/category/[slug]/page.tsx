@@ -1,9 +1,9 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import CategoryProductsClient from "@/components/category/CategoryProductsClient";
 import { getProducts } from "@/lib/products";
-import { getProductEmoji } from "@/lib/productsEmojis";
 
 interface CategoryPageProps {
   params: Promise<{
@@ -16,12 +16,12 @@ export default async function CategoryPage({
 }: CategoryPageProps) {
   const { slug } = await params;
 
-  // Fetch all products
+  // Fetch all products from API
   const products = await getProducts();
 
   // Filter products by category slug
   const categoryProducts = products.filter(
-    (product) => product.category === slug
+    (product) => product.category === slug,
   );
 
   // Invalid category or no products found
@@ -33,13 +33,10 @@ export default async function CategoryPage({
   const category = categoryProducts[0];
 
   const categoryName = category.categoryNameBn;
-  const categoryIcon =
-    category.categoryIcon || getProductEmoji(categoryName);
 
   return (
-    <main className="min-h-screen bg-[#f5f9f4] px-4 py-8 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-[#f0f5f0] px-4 py-8 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
-
         {/* Breadcrumb */}
         <nav className="mb-6 flex items-center gap-2 text-sm text-gray-500">
           <Link
@@ -57,14 +54,24 @@ export default async function CategoryPage({
         </nav>
 
         {/* Category Header */}
-        <section className="mb-8 overflow-hidden rounded-2xl border border-green-100 bg-white shadow-sm">
-          <div className="flex flex-col gap-5 bg-linear-to-r from-green-50 via-lime-50 to-emerald-100 p-5 sm:flex-row sm:items-center sm:p-8">
-
-            {/* Category Icon */}
-            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl border border-green-100 bg-white text-5xl shadow-sm sm:h-24 sm:w-24">
-              <span role="img" aria-label={categoryName}>
-                {categoryIcon}
-              </span>
+        <section className="mb-8 overflow-hidden rounded-2xl border border-[#e0e9e0] bg-[#fbfcfa]">
+          <div className="flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:p-8">
+            {/* Category Image from API */}
+            <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-[#f0f5ef] sm:h-24 sm:w-24">
+              {category.image ? (
+                <Image
+                  src={category.image}
+                  alt={categoryName}
+                  width={96}
+                  height={96}
+                  unoptimized
+                  className="h-full w-full object-contain p-2"
+                />
+              ) : (
+                <span className="text-xs text-gray-400">
+                  ছবি নেই
+                </span>
+              )}
             </div>
 
             {/* Category Information */}
@@ -105,7 +112,6 @@ export default async function CategoryPage({
             হোম পেজে ফিরে যান
           </Link>
         </div>
-
       </div>
     </main>
   );

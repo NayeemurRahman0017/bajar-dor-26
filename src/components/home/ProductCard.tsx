@@ -1,97 +1,88 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { Product } from "@/lib/types";
 import { formatPrice, getUnitBn } from "@/lib/utils";
-import { getProductEmoji } from "@/lib/productsEmojis";
 
 interface ProductCardProps {
-product: Product;
+  product: Product;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
-const isPriceUp = product.change.dir === "up";
-const isPriceDown = product.change.dir === "down";
-const isPriceFlat = product.change.dir === "flat";
+  const isPriceUp = product.change.dir === "up";
+  const isPriceDown = product.change.dir === "down";
+  const isPriceFlat = product.change.dir === "flat";
 
-return (
-<Link
-href={`/product/${product.slug}`}
-className="group block overflow-hidden rounded-xl border border-green-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-green-300 hover:shadow-lg"
->
-{/* Product Emoji */} <div className="flex h-24 items-start justify-start bg-linear-to-br from-green-50 via-lime-50 to-emerald-100 p-2 sm:h-32 sm:p-3"> <span
-       className="text-5xl transition-transform duration-300 group-hover:scale-110 sm:text-6xl"
-       role="img"
-       aria-label={product.nameBn}
-     >
-{getProductEmoji(product.nameBn)} </span> </div>
+  return (
+    <Link
+      href={`/product/${product.slug}`}
+      className="group block h-34.5 w-full overflow-hidden rounded-[20px] border border-[#dfe7df] bg-[#a4a2bc6b] p-3 transition-all duration-300 hover:border-green-300 hover:shadow-md sm:p-4"
+    >
+      {/* Product Image and Information */}
+      <div className="flex items-center gap-5">
+        {/* API Product Image */}
+        <div className="flex h-19 w-19 shrink-0 items-center justify-center overflow-hidden rounded-[20px] bg-[#f0f5ef] sm:h-16 sm:w-16">
+          {product.image ? (
+            <Image
+              src={product.image}
+              alt=""
+              width={98}
+              height={98}
+              className="h-full w-full object-contain p-2 transition-transform duration-300 group-hover:scale-105"
+              unoptimized
+            />
+          ) : (
+            <span className="text-sm text-gray-400">ছবি নেই</span>
+          )}
+        </div>
 
-  {/* Product Information */}
-  <div className="p-3 sm:p-4">
-    {/* Category */}
-    <p className="truncate text-xs font-medium text-green-700 sm:text-sm">
-      {product.categoryIcon} {product.categoryNameBn}
-    </p>
+        {/* Product Name and Unit */}
+        <div className="min-w-0 flex-1">
+          <h3 className="line-clamp-2 text-lg font-bold leading-snug text-[#202923] transition-colors group-hover:text-green-700 sm:text-xl">
+            {product.nameBn}
+          </h3>
 
-    {/* Product Name */}
-    <h3 className="mt-1 truncate text-sm font-bold text-gray-800 transition-colors group-hover:text-green-700 sm:text-base">
-      {product.nameBn}
-    </h3>
+          <p className="mt-1 truncate text-sm text-[#333b35] sm:text-base">
+            {getUnitBn(product.unit)}
+          </p>
+        </div>
+      </div>
 
-    {/* Unit */}
-    <p className="mt-1 text-xs text-gray-500 sm:text-sm">
-      {getUnitBn(product.unit)}
-    </p>
+      {/* Today's Price and Price Change */}
+      <div className="mt-1 flex min-w-0 items-center justify-between gap-2">
+        <div className="min-w-0 flex-1">
+          <p className="text-sm text-[#303830] sm:text-base">
+            আজকের দাম
+          </p>
 
-    {/* Today's Price */}
-    <div className="mt-3 rounded-lg border border-green-100 bg-green-50 p-2 sm:p-3">
-      <p className="text-[10px] text-green-700 sm:text-xs">
-        আজকের বাজারদর
-      </p>
+          <p className="mt-0.5 truncate text-lg font-extrabold leading-tight text-[#202923] sm:text-2xl">
+            {formatPrice(product.today)} টাকা
+          </p>
+        </div>
 
-      <p className="mt-1 text-base font-extrabold text-green-800 sm:text-xl">
-        ৳{formatPrice(product.today)}
-      </p>
-    </div>
+        {/* Price Change Badge */}
+        <div className="shrink-0">
+          {isPriceUp && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-[#f0f5ef] px-2 py-1 text-xs font-bold text-[#c83d42] sm:px-3 sm:py-2 sm:text-sm">
+              <span aria-hidden="true">▲</span>
+              {formatPrice(product.change.pct)}%
+            </span>
+          )}
 
-    {/* Price Change and Yesterday's Price */}
-    <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
-      <span className="text-[10px] text-gray-500 sm:text-xs">
-        গতকালের দাম
-      </span>
+          {isPriceDown && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-[#f0f5ef] px-2 py-1 text-xs font-bold text-[#21965b] sm:px-3 sm:py-2 sm:text-sm">
+              <span aria-hidden="true">▼</span>
+              {formatPrice(product.change.pct)}%
+            </span>
+          )}
 
-      <span className="text-xs font-semibold text-gray-700 sm:text-sm">
-        ৳{formatPrice(product.yesterday)}
-      </span>
-    </div>
-
-    {/* Price Change Badge */}
-    <div className="mt-2">
-      {isPriceUp && (
-        <span className="inline-flex rounded-full bg-green-100 px-2 py-1 text-xs font-bold text-green-700">
-          ▲ {formatPrice(product.change.pct)}%
-        </span>
-      )}
-
-      {isPriceDown && (
-        <span className="inline-flex rounded-full bg-red-100 px-2 py-1 text-xs font-bold text-red-700">
-          ▼ {formatPrice(product.change.pct)}%
-        </span>
-      )}
-
-      {isPriceFlat && (
-        <span className="inline-flex rounded-full bg-gray-100 px-2 py-1 text-xs font-semibold text-gray-600">
-          —০.০%
-        </span>
-      )}
-    </div>
-
-    {/* Details Button */}
-    <div className="mt-3 flex items-center justify-between rounded-lg bg-green-700 px-3 py-2 text-xs font-semibold text-white transition-colors group-hover:bg-green-800 sm:text-sm">
-      <span>বিস্তারিত দেখুন</span>
-      <span aria-hidden="true">→</span>
-    </div>
-  </div>
-</Link>
-
-
-);
+          {isPriceFlat && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-[#f0f5ef] px-2 py-1 text-xs font-bold text-gray-600 sm:px-3 sm:py-2 sm:text-sm">
+              <span aria-hidden="true">—</span>
+              ০.০%
+            </span>
+          )}
+        </div>
+      </div>
+    </Link>
+  );
 }

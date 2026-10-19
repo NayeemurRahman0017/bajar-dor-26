@@ -1,4 +1,3 @@
-
 import { betterAuth } from "better-auth";
 import { MongoClient } from "mongodb";
 import { mongodbAdapter } from "@better-auth/mongo-adapter";
@@ -6,13 +5,10 @@ import { mongodbAdapter } from "@better-auth/mongo-adapter";
 const mongoUri = process.env.MONGODB_URI;
 
 if (!mongoUri) {
-  throw new Error(
-    "MONGODB_URI is missing in your .env.local file"
-  );
+  throw new Error("MONGODB_URI is missing in your .env.local file");
 }
 
 const client = new MongoClient(mongoUri);
-
 const db = client.db("bazardor");
 
 export const auth = betterAuth({
@@ -35,11 +31,21 @@ export const auth = betterAuth({
     client,
   }),
 
+  // Email and Password Authentication
   emailAndPassword: {
     enabled: true,
     minPasswordLength: 8,
   },
 
+  // Account Linking Configuration
+  account: {
+    accountLinking: {
+      enabled: true,
+      allowDifferentEmails: true,
+    },
+  },
+
+  // Google and GitHub Authentication
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -48,8 +54,7 @@ export const auth = betterAuth({
 
     github: {
       clientId: process.env.GITHUB_CLIENT_ID as string,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET as string
+      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
     },
   },
 });
-
