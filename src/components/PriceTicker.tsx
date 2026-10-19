@@ -58,7 +58,7 @@ export default function PriceTicker() {
       ];
 
   return (
-    <div className="container mx-auto">
+   <div className="container mx-auto sticky top-0 z-50">
     <div className="overflow-hidden border-b border-green-100 bg-green-50">
       <div className="mx-auto flex max-w-7xl items-center">
         <div className="z-10 shrink-0 bg-green-700 px-3 py-2 text-xs font-bold text-white sm:px-4 sm:text-sm">
