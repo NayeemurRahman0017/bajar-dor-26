@@ -58,66 +58,75 @@ export default function PriceTicker() {
       ];
 
   return (
+<<<<<<< HEAD
    <div className="container mx-auto sticky top-0 z-50">
     <div className="overflow-hidden border-b border-green-100 bg-green-50">
       <div className="mx-auto flex max-w-7xl items-center">
         <div className="z-10 shrink-0 bg-green-700 px-3 py-2 text-xs font-bold text-white sm:px-4 sm:text-sm">
           বাজারদর
         </div>
+=======
+    <div className="container mx-auto sticky top-0 z-50">
+      <div className="overflow-hidden border-b border-green-100 bg-green-50">
+        <div className="mx-auto flex max-w-7xl items-center">
+          <div className="z-10 shrink-0 bg-green-700 px-3 py-2 text-xs font-bold text-white sm:px-4 sm:text-sm">
+            বাজারদর
+          </div>
+>>>>>>> bc0b716 (add sticky)
 
-        <div className="min-w-0 flex-1 overflow-hidden py-2">
-          <div className="animate-marquee flex w-max items-center gap-8 whitespace-nowrap">
-            {[0, 1].map((copy) => (
-              <div
-                key={copy}
-                className="flex items-center gap-8"
-                aria-hidden={copy === 1}
-              >
-                {tickerItems.map((product, index) => {
-                  const name = product.nameBn ?? product.name ?? "পণ্য";
-                  const price = product.today ?? product.price;
-                  const direction = product.change?.dir;
-                  const changeColor =
-                    direction === "up"
-                      ? "text-red-600"
-                      : direction === "down"
-                        ? "text-green-700"
-                        : "text-gray-500";
+          <div className="min-w-0 flex-1 overflow-hidden py-2">
+            <div className="animate-marquee flex w-max items-center gap-8 whitespace-nowrap">
+              {[0, 1].map((copy) => (
+                <div
+                  key={copy}
+                  className="flex items-center gap-8"
+                  aria-hidden={copy === 1}
+                >
+                  {tickerItems.map((product, index) => {
+                    const name = product.nameBn ?? product.name ?? "পণ্য";
+                    const price = product.today ?? product.price;
+                    const direction = product.change?.dir;
+                    const changeColor =
+                      direction === "up"
+                        ? "text-red-600"
+                        : direction === "down"
+                          ? "text-green-700"
+                          : "text-gray-500";
 
-                  return (
-                    <span
-                      key={`${product.id ?? product.slug ?? name}-${index}`}
-                      className="flex items-center gap-2 text-xs sm:text-sm"
-                    >
-                      <span className="font-medium text-gray-700">
-                        {name}
+                    return (
+                      <span
+                        key={`${product.id ?? product.slug ?? name}-${index}`}
+                        className="flex items-center gap-2 text-xs sm:text-sm"
+                      >
+                        <span className="font-medium text-gray-700">
+                          {name}
+                        </span>
+
+                        {typeof price === "number" && (
+                          <span className="font-bold text-gray-900">
+                            ৳{toBengaliNumber(price)}
+                          </span>
+                        )}
+
+                        {typeof product.change?.pct === "number" && (
+                          <span className={`font-semibold ${changeColor}`}>
+                            {direction === "up"
+                              ? "▲"
+                              : direction === "down"
+                                ? "▼"
+                                : "•"}{" "}
+                            {toBengaliNumber(product.change.pct)}%
+                          </span>
+                        )}
                       </span>
-
-                      {typeof price === "number" && (
-                        <span className="font-bold text-gray-900">
-                          ৳{toBengaliNumber(price)}
-                        </span>
-                      )}
-
-                      {typeof product.change?.pct === "number" && (
-                        <span className={`font-semibold ${changeColor}`}>
-                          {direction === "up"
-                            ? "▲"
-                            : direction === "down"
-                              ? "▼"
-                              : "•"}{" "}
-                          {toBengaliNumber(product.change.pct)}%
-                        </span>
-                      )}
-                    </span>
-                  );
-                })}
-              </div>
-            ))}
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
   );
 }
