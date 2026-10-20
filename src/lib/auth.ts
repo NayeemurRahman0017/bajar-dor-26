@@ -1,3 +1,4 @@
+
 import { betterAuth } from "better-auth";
 import { MongoClient } from "mongodb";
 import { mongodbAdapter } from "@better-auth/mongo-adapter";
@@ -15,8 +16,7 @@ export const auth = betterAuth({
   appName: "BazarDor",
 
   baseURL:
-    process.env.BETTER_AUTH_URL ||
-    "http://localhost:3000",
+    process.env.BETTER_AUTH_URL || "http://localhost:3000",
 
   secret: process.env.BETTER_AUTH_SECRET,
 
@@ -31,21 +31,19 @@ export const auth = betterAuth({
     client,
   }),
 
-  
   emailAndPassword: {
     enabled: true,
     minPasswordLength: 8,
   },
 
-  
   account: {
     accountLinking: {
       enabled: true,
       allowDifferentEmails: true,
+      trustedProviders: ["google", "github"],
     },
   },
 
-  
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -58,3 +56,4 @@ export const auth = betterAuth({
     },
   },
 });
+
