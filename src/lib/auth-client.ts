@@ -1,17 +1,14 @@
-
 "use client";
 
 import { createAuthClient } from "better-auth/react";
 
 export const authClient = createAuthClient({
-  baseURL:
-    
-    "https://bajar-dor-26.netlify.app",
+baseURL: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
 });
 
 export const {
-  signIn,
-  signUp,
-  signOut,
-  useSession,
+signIn,
+signUp,
+signOut,
+useSession,
 } = authClient;
