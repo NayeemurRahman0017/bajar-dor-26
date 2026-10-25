@@ -17,7 +17,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       className="group block h-34.5 w-full overflow-hidden rounded-[20px] border border-[#dfe7df] bg-[#a4a2bc6b] p-3 transition-all duration-300 hover:border-green-300 hover:shadow-md sm:p-4"
     >
       <div className="flex items-center gap-5">
-        {/* Product Image / Emoji */}
+        
         <div className="flex h-19 w-19 shrink-0 items-center justify-center overflow-hidden rounded-[20px] bg-[#f0f5ef] sm:h-16 sm:w-16">
           {product.image ? (
             <span
